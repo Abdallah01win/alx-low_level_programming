@@ -13,10 +13,10 @@ int main(void)
 	/* your code goes there */
 	if (n)
 	  {
-	    printf("%d is positive\n", $n);
+	    printf("%d is positive\n", n);
 	  }else
 	  {
-	    printf("%d is negative\n", $n);
+	    printf("%d is negative\n", n);
 	  }
 	return (0);
 }
