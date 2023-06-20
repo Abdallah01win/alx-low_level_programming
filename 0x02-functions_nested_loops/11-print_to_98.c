@@ -3,9 +3,7 @@
 #include <stdio.h>
 /**
  * print_to_98 - print_to_98 function
- * 
- * n - n integer
- * 
+ * n - n parameter
  * Return: nothing
  */
 void print_to_98(int n)
