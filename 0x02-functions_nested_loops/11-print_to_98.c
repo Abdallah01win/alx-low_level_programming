@@ -2,7 +2,7 @@
 #include "6-abs.c"
 #include <stdio.h>
 /**
- * main - main function
+ * print_to_98 - print_to_98 function
  *
  * Return: nothing
  */
