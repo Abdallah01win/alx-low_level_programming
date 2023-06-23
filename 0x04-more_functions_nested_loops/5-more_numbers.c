@@ -1,19 +1,23 @@
 #include "main.h"
-
 /**
- * main - check the code for more number function.
+ * more_numbers - prints the numbers
  *
- * Return: Always 0.
  */
-int more_numbers(void)
+void more_numbers(void)
 {
-  for(int i = 0; i > 10; i++)
-    {
-      for(int j = 0; j > 14; j++)
+	int i;
+	int h;
+
+	for (h = 0; h <= 9; h++)
 	{
-	  printf("%d", j);
+		for (i = 0; i <= 14; i++)
+		{
+			if (i > 9)
+			{
+				_putchar(i / 10 + '0');
+			}
+			_putchar(i % 10 + '0');
+		}
+		_putchar('\n');
 	}
-      printf("\n");
-    }
-  return(0);
 }
