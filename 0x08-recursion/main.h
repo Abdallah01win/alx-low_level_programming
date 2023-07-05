@@ -389,4 +389,5 @@ void swap_int(int *a, int *b);
  * Return: returns length
  */
 int _strlen(char *s);
+int wildcard(char *s1, char *s2);
 #endif
