@@ -6,7 +6,7 @@
  * @ac: pointer
  * @av: altura
  *
- * REturn: result
+ * Return: On success, a pointer to the concatenated string.
  */
 
 char *argstostr(int ac, char **av)
