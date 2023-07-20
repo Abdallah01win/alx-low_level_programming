@@ -1,91 +1,85 @@
 #include <stdarg.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include "variadic_functions.h"
+
 /**
- * print_c - prints char
- * @a: list to give
- * Return: always 0
+ * print_char - prints char
+ * @valist: valist
  */
-int print_c(va_list a)
+void print_char(va_list valist)
 {
-	printf("%c", va_arg(a, int));
-	return (0);
+	printf("%c", va_arg(valist, int));
 }
+
 /**
- * print_i - prints int
- * @a: list to give
- * Return: always 0
+ * print_int - prints int
+ * @valist: valist
  */
-int print_i(va_list a)
+void print_int(va_list valist)
 {
-	printf("%d", va_arg(a, int));
-	return (0);
+	printf("%d", va_arg(valist, int));
 }
+
 /**
- * print_f - prints float
- * @a: list to give
- * Return: always 0
+ * print_float - prints float
+ * @valist: valist
  */
-int print_f(va_list a)
+void print_float(va_list valist)
 {
-	printf("%f", va_arg(a, double));
-	return (0);
+	printf("%f", va_arg(valist, double));
 }
+
 /**
- * print_s - prints string
- * @a: list to give
- * Return: always 0
+ * print_string - prints string
+ * @valist: valist
  */
-int print_s(va_list a)
+void print_string(va_list valist)
 {
 	char *s;
 
-	s = va_arg(a, char *);
+	s = va_arg(valist, char *);
+
 	if (s == NULL)
 	{
 		printf("(nil)");
-		return (0);
+		return;
 	}
 	printf("%s", s);
-	return (0);
 }
+
 /**
- * print_all - prints all
- * @format: format string that says arg types
- *
+ * print_all - print varying input of ints, chars, floats, and strings
+ * @format: an array of chars signifying which data type to print
  */
 void print_all(const char * const format, ...)
 {
-	int i, j;
-	char *sep = "";
-	char *sep2 = ", ";
-	va_list anyArgs;
-	printer ops[] = {
-		{"c", print_c},
-		{"i", print_i},
-		{"s", print_s},
-		{"f", print_f},
-		{NULL, NULL}
-	};
+	char *separator = "";
+	int i, j = 0;
+	va_list valist;
 
-	va_start(anyArgs, format);
-	i = 0;
-	while (format != NULL && format[i])
+	datatype choice[] = { {'c', print_char},
+			      {'i', print_int},
+			      {'f', print_float},
+			      {'s', print_string},
+			      {'\0', NULL} };
+
+	/* iterate format; if datatype matched, access function via struct */
+	va_start(valist, format);
+	while (format != NULL && format[j] != '\0')
 	{
-		j = 0;
-		while (ops[j].f != NULL)
+		i = 0;
+		while (choice[i].letter != '\0')
 		{
-			if (format[i] == *(ops[j].c))
+			if (choice[i].letter == format[j])
 			{
-				printf("%s", sep);
-				ops[j].f(anyArgs);
+				printf("%s", separator);
+				choice[i].func(valist); /*access va_arg later*/
+				separator = ", ";
 			}
-			j++;
+			i++;
 		}
-		sep = sep2;
-		i++;
+		j++;
 	}
+	va_end(valist);
 	printf("\n");
-	va_end(anyArgs);
 }
