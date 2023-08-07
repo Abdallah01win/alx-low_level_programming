@@ -16,7 +16,7 @@ int main(int ac, char *argv[])
 
 	if (ac != 2)
 	{
-		dprintf(STDERR_FILENO, "Usage: cp %s %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Usage: cp %s\n", argv[1]);
 		exit(97);
 	}
 	fd1 = open(argv[1], O_RDONLY);
