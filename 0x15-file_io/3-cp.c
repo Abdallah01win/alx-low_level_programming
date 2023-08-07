@@ -1,55 +1,55 @@
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "main.h"
+
 /**
- * main - program to copy
- * @ac: argument count
- * @av: array of arguments
- * Return: a value
+ * main - entry point copy contents of file.
+ *
+ * @ac: arguments count
+ * @argv: arguments vector
+ *
+ * Return: Always 0 if succeed or erros if fail.
  */
-int main(int ac, char **av)
+int main(int ac, char *argv[])
 {
-	int fdFrum, fdToo, wrote, readed;
-	char buff[1024];
+	int fd1, fd2;
+	char buffer[1024];
+	ssize_t num;
 
 	if (ac != 3)
 	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		dprintf(STDERR_FILENO, "Usage: cp %s %s\n", argv[1], argv[2]);
 		exit(97);
 	}
-	fdFrum = open(av[1], O_RDONLY);
-	if (fdFrum == -1)
+	fd1 = open(argv[1], O_RDONLY);
+	fd2 = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+
+	if (fd1 == -1 || fd2 == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read from a file %s\n", argv[1]);
 		exit(98);
 	}
-	fdToo = open(av[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	if (fdToo == -1)
+
+	while ((num = read(fd1, buffer, 1024)) > 0)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
-		exit(99);
-	}
-	while ((readed = read(fdFrum, buff, 1024)) > 0)
-	{
-		wrote = write(fdToo, buff, readed);
-		if (wrote == -1)
+		if (write(fd2, buffer, num) != num)
 		{
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
+			dprintf(STDERR_FILENO, "Error: Can't write to %s", argv[2]);
 			exit(99);
 		}
 	}
-	if (readed == -1)
+	if (close(fd1) == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
-		exit(98);
-	}
-	if (close(fdFrum) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d", fdFrum);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d", fd1);
 		exit(100);
 	}
-	if (close(fdToo) == -1)
+	if (close(fd2) == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d", fdToo);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d", fd2);
 		exit(100);
 	}
+
 	return (0);
 }
